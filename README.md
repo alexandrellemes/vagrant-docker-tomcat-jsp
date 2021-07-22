@@ -1,6 +1,9 @@
 # Vagrant + Docker + Apache Tomcat + JSP
 
-This article describes how to deploy a JSP website using Docker, Apache Tomcat.
+Original documentation:
+https://gist.github.com/hallazzang/c346e544b1c6fce8f304fdd5b2295fb6
+
+This article describes how to deploy a JSP website using Vagrant, Docker, Apache Tomcat.
 
 ## Directory structure
 
