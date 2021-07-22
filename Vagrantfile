@@ -50,22 +50,15 @@ Vagrant.configure(2) do |config|
   end
   
   # Configuração do diretório local onde deverá estar disponibilizado os códigos-fontes do SEI (sei, sip, infra_php, infra_css, infra_js)
-  config.vm.synced_folder ENV['SRC_HOME'], "/mnt/sei/src", mount_options: ["dmode=777", "fmode=777"]
+  config.vm.synced_folder ENV['SRC_HOME'], "/mnt/src", mount_options: ["dmode=777", "fmode=777"]
   config.vm.synced_folder ".", "/home/docker/discoDocker/docker", mount_options: ["dmode=777", "fmode=777"]
 
   # Configuração do redirecionamento entre Máquina Virtual e Host
-  config.vm.network :forwarded_port, guest: 8000, host: 8000 # SIP e SEI (Apache)
-  config.vm.network :forwarded_port, guest: 1521, host: 1521 # Banco de Dados (Oracle)
-  config.vm.network :forwarded_port, guest: 1433, host: 1433 # Banco de Dados (SQL Server)
-  config.vm.network :forwarded_port, guest: 3306, host: 3306 # Banco de Dados (Mysql)
-  config.vm.network :forwarded_port, guest: 8983, host: 8983 # Solr Indexer (Jetty)
-  config.vm.network :forwarded_port, guest: 8080, host: 8080 # Jod Converter
-  config.vm.network :forwarded_port, guest: 1080, host: 1080 # MailCatcher
   config.vm.network :forwarded_port, guest: 8888, host: 8888 # Apache TomCat
 
   config.vm.provision "install-docker", type: "shell", path: "./install-docker.sh"
   config.vm.provision "install-docker-compose", type: "shell", path: "./install-docker-compose.sh"
-  config.vm.provision "install-docker-machines", type: "shell", path: "./run.sh"
+  config.vm.provision "install-docker-machines", type: "shell", path: "./run.sh", run: "always"
 
   config.vm.post_up_message = <<-EOF
 
