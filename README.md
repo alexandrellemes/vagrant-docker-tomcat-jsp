@@ -134,7 +134,7 @@ $ vagrant status
 
 Visit `http://localhost:8888/webapp` to see if your website is running!
 
-##Original documentation:
+## Original documentation:
 
 Hanjun Kim hallazzang
 Go, Python Developer / Blockchain Engineer
