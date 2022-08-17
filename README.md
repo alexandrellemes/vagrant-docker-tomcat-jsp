@@ -1,4 +1,4 @@
-# Vagrant + Docker + Apache Tomcat + JSP
+# Vagrant + Docker + Apache Tomcat
 
 This article describes how to deploy a JSP website using Vagrant, Docker, Apache Tomcat.
 
@@ -17,6 +17,9 @@ yourproject/
     README.md
     run.sh
     Vagrantfile
+    files/
+        mailhog
+        tomcat
     webapp/
         WEB-INF/
           classes/
@@ -109,16 +112,6 @@ Finally, the `CMD` instruction will start up Apache Tomcat, which runs our web a
 
 Go to `yourproject/` in terminal, and type it to build a Docker image:
 
-```bash
-$ docker build -t mywebapp .
-```
-
-And then run:
-
-```bash
-$ docker run --rm -it -p 8888:8080 mywebapp
-```
-
 ## Build Docker Image and Run with Vagrant
 
 Go to `yourproject/` in terminal, and type it to build a Docker image:
@@ -132,7 +125,7 @@ And then run:
 $ vagrant status
 ```
 
-Visit `http://localhost:8888/webapp` to see if your website is running!
+Visit `http://localhost:8080` to see if your website is running!
 
 ## Original documentation:
 
