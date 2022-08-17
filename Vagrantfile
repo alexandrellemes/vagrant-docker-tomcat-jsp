@@ -46,15 +46,21 @@ Vagrant.configure(2) do |config|
   config.vbguest.installer_options = { allow_kernel_upgrade: true }
 
   config.vm.provider "virtualbox" do |vb|
+    vb.name = "apache-tomcat"
     vb.customize ["modifyvm", :id, "--memory", ENV['SEI_MEMORY'], "--usb", "off", "--audio", "none"]
   end
   
   # Configuração do diretório local onde deverá estar disponibilizado os códigos-fontes do SEI (sei, sip, infra_php, infra_css, infra_js)
   config.vm.synced_folder ENV['SRC_HOME'], "/mnt/src", mount_options: ["dmode=777", "fmode=777"]
-  config.vm.synced_folder ".", "/home/docker/discoDocker/docker", mount_options: ["dmode=777", "fmode=777"]
+  config.vm.synced_folder ".", ENV['DIR_HOME'], mount_options: ["dmode=777", "fmode=777"]
 
   # Configuração do redirecionamento entre Máquina Virtual e Host
-  config.vm.network :forwarded_port, guest: 8888, host: 8888 # Apache TomCat
+  config.vm.network :forwarded_port, guest: 8080, host: 8080 # Apache TomCat
+  config.vm.network :forwarded_port, guest: 8081, host: 8081 # Adminer
+  config.vm.network :forwarded_port, guest: 1025, host: 1025 # MailHog
+  config.vm.network :forwarded_port, guest: 1080, host: 1080 # MailHog
+  config.vm.network :forwarded_port, guest: 11211, host: 11211 # Memcached
+  config.vm.network :forwarded_port, guest: 3306, host: 3306 # MySQL
 
   config.vm.provision "install-docker", type: "shell", path: "./install-docker.sh"
   config.vm.provision "install-docker-compose", type: "shell", path: "./install-docker-compose.sh"
@@ -67,7 +73,7 @@ Vagrant.configure(2) do |config|
 =========================================================================
 
 = Endereços de Acesso à Aplicação ========================================
-JSP ........................... http://localhost:8888/webapp
+JSP ........................... http://localhost:8080/webapp
 
 = Comandos Úteis =========================================================
 vagrant up                        - Inicializar ambiente do SEI

@@ -2,7 +2,8 @@
 
 echo 'Step 1- Update your Ubuntu Linux Box.'
 sudo apt-get update -y
-sudo apt-get install -y curl uidmap
+sudo apt-get install -y curl uidmap dos2unix htop
+sudo dos2unix *.sh
 
 echo 'Step 2 –  Download and run a get-docker.sh script to install docker.'
 curl -fsSL https://get.docker.com -o get-docker.sh

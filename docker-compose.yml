@@ -1,0 +1,129 @@
+version: '3.7'
+
+services:
+
+  tomcat:
+    container_name: tomcat
+    restart: always
+    build:
+      context: ./files/tomcat
+    volumes:
+      - /tmp:/tmp
+    ports:
+      - 8080:8080
+    environment:
+      web_app: webapp
+    networks:
+      - code-network
+
+  mysqldb:
+    container_name: mysqldb
+    image: mysql:latest
+    restart: always
+    command: ['mysqld', '--lower_case_table_names=0', '--default_authentication_plugin=mysql_native_password']
+    volumes:
+      - mysqldb_data:/var/lib/mysql
+      - /tmp:/tmp
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+      MYSQL_USER: 'test'
+      MYSQL_PASSWORD: '123456'
+      MYSQL_DATABASE: 'testdb'
+    networks:
+      - code-network
+
+  memcached:
+    container_name: memcached
+    restart: always
+    image: memcached:latest
+    ports:
+      - 11211:11211
+    networks:
+      - code-network
+
+#  Gerenciador de Container.
+#  portainer:
+#    image: portainer/portainer
+#    ports:
+#      - 9000:9000
+#    command: -H unix:///var/run/docker.sock
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - portainer_data:/data
+#    networks:
+#      - code-network
+
+  # SMTP Server - desenvolvimento. (MailHog)
+  mail:
+    container_name: mail
+    hostname: mail.local
+    domainname: mail.local
+    restart: always
+    build:
+      context: ./files/mailhog
+    volumes:
+    # - ${HOME_DIR}/discoDocker/docker/mail/:/var/mail/
+      - /tmp:/tmp
+    ports:
+      - 1025:1025
+      - 1080:8025
+    networks:
+      - code-network
+
+#  oracledb:
+#    container_name: oracledb
+#    #     image: wnameless/oracle-xe-11g
+#    image: epiclabs/docker-oracle-xe-11g
+#    ports:
+#      - "1521:1521"
+#    networks:
+#      - code-network
+
+#  postgresdb:
+#    container_name: postgresdb
+#    image: postgres
+#    restart: always
+#    ports:
+#      - 5432:5432
+#    environment:
+#      POSTGRES_PASSWORD: 123456
+#    networks:
+#      - code-network
+
+#  sonarqube:
+#    container_name: sonarqube
+#    image: sonarqube
+#    restart: always
+#    ports:
+#      - 7004:9000
+#      - 7005:9092
+#    networks:
+#      - code-network
+
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
+    volumes:
+      - /tmp:/tmp
+    networks:
+      - code-network
+
+
+volumes:
+    mysqldb_data:
+    memcached_data:
+    portainer_data:
+    maillocal_data:
+    postgresdb_data:
+    sonarqube_data:
+
+networks:
+    code-network:
+      driver: bridge
+
